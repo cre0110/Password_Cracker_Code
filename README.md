@@ -1,2 +1,11 @@
-# Password_Cracker_Code
-The code of the Password Cracker
+本程序是对 Windows 平台下 Chromium 内核浏览器的本地凭据存储与解密机制进行复现，所有 Chromium 内核版本在 80 至 126 之间的浏览器，包括 Chrome、Edge、Opera、360 等均有效。
+
+Chromium 将主密钥通过系统 DPAPI 加密存放在 Local State 文件中，而 Windows DPAPI 仅隔离不同用户，不隔离同一用户权限下的不同进程。
+这导致任何以当前用户身份运行的轻量脚本，都能无感知调用系统接口解密主密钥，并批量还原保存在 Login Data 中的 AES 密文密码。
+
+根目录下的 pw8.py 就是完整复现程序。
+
+该复现方法在 Chrome 80（2020年2月）至 Chrome 126（2024年7月） 期间完全有效。
+自 Chrome 127 起，官方引入了应用绑定加密，将解密权限收拢至高权限系统服务并校验进程签名，此后该脚本在 Chrome 127 及更高版本中已直接失效。
+
+仅供网络安全技术研究
